@@ -24,6 +24,8 @@ param nsg2Name string
 var VnetName='Vnet-PWB-${location}-${environment}-Data'
 var SubnetName1='Snet-PWB-${location}-${environment}-SQL'
 var SubnetName2='Snet-PWB-${location}-${environment}-Mgmt'
+var Nsg1='NSG-${environment}-SQL-${location}'
+var Nsg2='NSG-${environment}-Mgmt-${location}'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
   name: VnetName
@@ -63,7 +65,7 @@ resource subnet2 'Microsoft.Network/virtualNetworks/subnets@2022-07-01'={
 
 resource NetworkSecurityGroup1 'Microsoft.Network/networkSecurityGroups@2019-11-01' = {
 
-  name: nsg1Name
+  name: Nsg1
   location: location
   properties: {
     
@@ -72,7 +74,7 @@ resource NetworkSecurityGroup1 'Microsoft.Network/networkSecurityGroups@2019-11-
 
 resource NetworkSecurityGroup2 'Microsoft.Network/networkSecurityGroups@2019-11-01' = {
   
-  name: nsg2Name
+  name: Nsg2
   location: location
   properties: {
     
