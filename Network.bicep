@@ -1,20 +1,14 @@
-@description('The Name of the Virtual Network')
-param VirtualNetworkName string
-
 @description('The IP Range for the Vnet')
 param IpRangePrefix string
 
-@description('Location for all resources.')
-param location string = resourceGroup().location
+@description('The name of the Environment')
+param environment string
 
-@description('Name of the Subnet')
-param Subnet1Name string
+@description('Location for all resources.')
+param location string 
 
 @description('Address Range of Subnet 1')
 param Subnet1AddressRange string
-
-@description('Name of the Subnet')
-param Subnet2Name string
 
 @description('Address Range of Subnet 1')
 param Subnet2AddressRange string
@@ -27,10 +21,12 @@ param nsg2Name string
 //   name:'PWB-DEV-WUS3-Vnet'
 // }
 //  output vnetID string=VnetEXT.id
-
+var VnetName='Vnet-PWB-${location}-${environment}-Data'
+var SubnetName1='Snet-PWB-${location}-${environment}-SQL'
+var SubnetName2='Snet-PWB-${location}-${environment}-Mgmt'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
-  name: VirtualNetworkName
+  name: VnetName
   location: location
   properties: {
     addressSpace: {
@@ -44,7 +40,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
 
 resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2022-07-01'={
   parent:virtualNetwork
-  name: Subnet1Name
+  name: SubnetName1
   properties:{
     addressPrefix:Subnet1AddressRange
     networkSecurityGroup:{
@@ -55,7 +51,7 @@ resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2022-07-01'={
 }
 resource subnet2 'Microsoft.Network/virtualNetworks/subnets@2022-07-01'={
   parent:virtualNetwork
-  name: Subnet2Name
+  name: SubnetName2
   properties:{
     addressPrefix:Subnet2AddressRange
     networkSecurityGroup:{
