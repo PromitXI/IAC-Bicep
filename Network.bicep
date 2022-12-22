@@ -1,8 +1,13 @@
 @description('The IP Range for the Vnet')
 param IpRangePrefix string
 
-@description('The name of the Environment')
-param environment string
+@description('The Name of the Envoirnment of Resource')
+@allowed( [
+  'Dev'
+  'Test'
+  'Prod'
+])
+param envoirnment string
 
 @description('Location for all resources.')
 param location string 
@@ -21,11 +26,11 @@ param nsg2Name string
 //   name:'PWB-DEV-WUS3-Vnet'
 // }
 //  output vnetID string=VnetEXT.id
-var VnetName='Vnet-PWB-${location}-${environment}-Data'
-var SubnetName1='Snet-PWB-${location}-${environment}-SQL'
-var SubnetName2='Snet-PWB-${location}-${environment}-Mgmt'
-var Nsg1='NSG-${environment}-SQL-${location}'
-var Nsg2='NSG-${environment}-Mgmt-${location}'
+var VnetName='Vnet-PWB-${location}-${envoirnment}-Data'
+var SubnetName1='Snet-PWB-${location}-${envoirnment}-SQL'
+var SubnetName2='Snet-PWB-${location}-${envoirnment}-Mgmt'
+var Nsg1='NSG-${envoirnment}-SQL-${location}'
+var Nsg2='NSG-${envoirnment}-Mgmt-${location}'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
   name: VnetName
