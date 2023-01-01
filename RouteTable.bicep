@@ -4,6 +4,14 @@ param RouteTableName string='PWB-Dev-Traffic-RTable'
 @description('Location for all resources.')
 param location string 
 
+@description('The Name of the Envoirnment of Resource')
+@allowed( [
+  'Dev'
+  'Test'
+  'Prod'
+])
+param envoirnment string
+
 @description('Route Table Name')
 param Routename string ='To-Hub-FW'
 
