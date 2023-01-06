@@ -9,6 +9,15 @@ param envoirnment string
 @description('The Location of The Resource Group and All Other Resources')
 param location string='westeurope'
 
+@description('The name of the Subnet')
+param subnetID string
+
+@description('The Subnet ID of Mgmt Subnet')
+param subnet2ID string
+
+@description('The Object ID of Vnet')
+param VnetId string
+
 
 var synapsename=toLower('PWBSynapseData${envoirnment}')
 var datalakename =toLower(take('pwb${envoirnment}data${uniqueString(resourceGroup().id)}',12))

@@ -142,10 +142,9 @@ module RouteTable 'RouteTable.bicep'={
   }
 }
 
-module StorageAccounts 'Storage-Account.bicep'={
+module StorageAccounts 'Storageacc.bicep'={
   name:'StorageAccounts'
   params:{
-    location: location
-    envoirnment:envoirnment
+    
   }
 }
