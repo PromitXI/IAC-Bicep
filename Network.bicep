@@ -18,9 +18,7 @@ param Subnet1AddressRange string
 @description('Address Range of Subnet 1')
 param Subnet2AddressRange string
 
-@description('The Name of the NSGs')
-param nsg1Name string
-param nsg2Name string
+
 
 // resource VnetEXT 'Microsoft.Network/virtualNetworks@2020-06-05-preview' existing={
 //   name:'PWB-DEV-WUS3-Vnet'

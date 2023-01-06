@@ -1,5 +1,4 @@
-@description('Name of the UserDefined Route Table')
-param RouteTableName string='PWB-Dev-Traffic-RTable'
+
 
 @description('Location for all resources.')
 param location string 
@@ -15,11 +14,16 @@ param envoirnment string
 @description('Route Table Name')
 param Routename string ='To-Hub-FW'
 
+@description('IP Adress of Next HopFirewall,Appliance, Router')
+param nextHopIP string 
+
+var RouteTableName='RT-PWB-Data-${envoirnment}'
+
 resource symbolicname 'Microsoft.Network/routeTables@2022-05-01' = {
   name: RouteTableName
   location: location
   tags: {
-    Envoirnment: 'Dev'
+    Envoirnment: envoirnment
     admin: 'Promit Bhattacherjee'
   }
   properties: {
@@ -31,7 +35,7 @@ resource symbolicname 'Microsoft.Network/routeTables@2022-05-01' = {
         properties: {
           addressPrefix: '0.0.0.0/0'
           hasBgpOverride: false
-          nextHopIpAddress: '10.221.0.131'
+          nextHopIpAddress: nextHopIP
           nextHopType: 'VirtualAppliance'
         }
         type: 'Microsoft.Network/routeTables/routes'

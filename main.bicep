@@ -1,27 +1,15 @@
-@description('The Name of the Virtual Network')
-param VirtualNetworkName string='PWB-DataPlatform-Dev-Vnet'
-
 @description('The IP Range for the Vnet')
 param IpRangePrefix string='10.0.0.0/16'
 
 @description('Location for all resources.')
 param location string ='westus3'
 
-@description('Name of the Subnet')
-param Subnet1Name string='SQL-Subnet-WUS3-Snet'
-
 @description('Address Range of Subnet 1')
 param Subnet1AddressRange string='10.0.1.0/24'
-
-@description('Name of the Subnet')
-param Subnet2Name string='Mgmt-Subnet-WUS3-Snet'
 
 @description('Address Range of Subnet 1')
 param Subnet2AddressRange string='10.0.2.0/24'
 
-@description('The Name of the NSGs')
-param nsg1Name string='SQl-Subnet-NSG'
-param nsg2Name string='Mgmt-Subnet-NSG'
 
 @description('The Name of the Envoirnment of Resource')
 @allowed( [
@@ -52,7 +40,7 @@ param VMAdminPassword string
 ])
 param VmSize string 
 
-module KeyVault 'pwb-KV.bicep'={
+module KeyVault 'Keyvault.bicep'={
   name:'KeyVault'
   params:{
     location: location
@@ -72,8 +60,7 @@ module NetworkingResouces 'Network.bicep'={
     IpRangePrefix:IpRangePrefix 
     Subnet1AddressRange:Subnet1AddressRange
     Subnet2AddressRange: Subnet2AddressRange
-    nsg1Name: nsg1Name
-    nsg2Name: nsg2Name
+    
   }
 }
 
@@ -136,6 +123,7 @@ module SynapseWorkspace 'Synapse.bicep'={
     subnetID: NetworkingResouces.outputs.sqlsubnetid
     subnet2ID:NetworkingResouces.outputs.mgmtsubnetid
     
+    
   }
 }
 
@@ -147,7 +135,9 @@ module RouteTable 'RouteTable.bicep'={
   params:{
     location: location    
     envoirnment: envoirnment
-    nextHopIP:nextHopIP 
+    nextHopIP:nextHopIP
+    
+     
     
   }
 }
