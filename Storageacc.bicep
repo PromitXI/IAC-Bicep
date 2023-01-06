@@ -17,6 +17,7 @@ var storageaccoutname=toLower('PWB${envoirnment}stracc00')
 resource StorageAccounts 'Microsoft.Storage/storageAccounts@2022-09-01'=[for item in range(1,3): {
   name:'${storageaccoutname}${item}'
   location:location
+  
   kind:'StorageV2'
   sku: {
     name: 'Premium_LRS'
