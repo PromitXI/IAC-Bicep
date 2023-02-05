@@ -14,7 +14,7 @@ param Subnet2AddressRange string='10.0.2.0/24'
 @description('The Name of the Envoirnment of Resource')
 @allowed( [
   'Dev'
-  'Test'
+  'QA'
   'Prod'
 ])
 param envoirnment string

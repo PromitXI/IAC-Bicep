@@ -3,7 +3,7 @@ targetScope= 'subscription'
 @description('The Envoirnment of Deployment')
 @allowed( [
   'Dev'
-  'Test'
+  'QA'
   'Prod'
 ])
 param envoirnment string

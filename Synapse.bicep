@@ -1,7 +1,7 @@
 @description('The Name of the Envoirnment of Resource')
 @allowed( [
   'Dev'
-  'Test'
+  'QA'
   'Prod'
 ])
 param envoirnment string
@@ -25,8 +25,8 @@ var blobname =toLower('filesys${envoirnment}')
 var PE1_Name=toLower('${azsynapse.name}-privateEndpoint1')
 
 var PrivateEndpointName='PE-PWB-Synapse-${envoirnment}'
-var privateDnsZoneName='privatelink-syn-${envoirnment}'
-var pvtEndpointDnsGroupName='${PrivateEndpointName}/SQLDNSGrp${envoirnment}'
+var privateDnsZoneName='privatelink-${envoirnment}.synapseworkspace.azure.com'
+var pvtEndpointDnsGroupName='${PrivateEndpointName}/Syn${envoirnment}'
 resource datalakestore 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   name: datalakename
   location: location
@@ -74,22 +74,13 @@ resource azsynapse 'Microsoft.Synapse/workspaces@2021-06-01'={
   }
 }
 
-resource privateDnsZone1 'Microsoft.Network/privateDnsZones@2018-09-01' = {
 
-  name: privateDnsZoneName
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+  name: PrivateEndpointName
   location: location
   properties: {
-    registrationEnabled: true
-  }
-}
-
-resource privateEndpoint1 'Microsoft.Network/privateEndpoints@2022-07-01' ={
-  
-  name:PE1_Name
-  location:location
-   properties: {
     subnet: {
-      id: subnetID
+      id: subnet2ID
     }
     privateLinkServiceConnections: [
       {
@@ -106,4 +97,38 @@ resource privateEndpoint1 'Microsoft.Network/privateEndpoints@2022-07-01' ={
   
 }
 
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: privateDnsZoneName
+  location: 'global'
+  properties: {}
+  
+}
 
+resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: privateDnsZone
+  name: '${privateDnsZoneName}-link'
+  location: 'global'
+  properties: {
+    registrationEnabled: false
+    virtualNetwork: {
+      id: VnetId
+    }
+  }
+}
+
+resource pvtEndpointDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = {
+  name: pvtEndpointDnsGroupName
+  properties: {
+    privateDnsZoneConfigs: [
+      {
+        name: 'config1'
+        properties: {
+          privateDnsZoneId: privateDnsZone.id
+        }
+      }
+    ]
+  }
+  dependsOn: [
+    privateEndpoint
+  ]
+}
