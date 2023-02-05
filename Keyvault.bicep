@@ -9,7 +9,7 @@ param envoirnment string
 @description('The Location of The Resource Group and All Other Resources')
 param location string
 
-param name string =take('PWB-${envoirnment}-Data-KeVl-${uniqueString(resourceGroup().id)}',21)
+param name string =take('PWB-${envoirnment}-Data-Kvlt-${uniqueString(resourceGroup().id)}',21)
 
 
 

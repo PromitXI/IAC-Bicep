@@ -114,7 +114,7 @@ module SQLDatabase 'SQLServer.bicep'={
 module SynapseWorkspace 'Synapse.bicep'={
   name:'SynapseWorkspace'
   dependsOn:[
-    SQLDatabase
+    SQLDatabase,NetworkingResouces
   ]
   params:{
     envoirnment: envoirnment

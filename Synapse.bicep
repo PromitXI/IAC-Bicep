@@ -22,7 +22,11 @@ param VnetId string
 var synapsename=toLower('PWBSynapseData${envoirnment}')
 var datalakename =toLower(take('pwb${envoirnment}data${uniqueString(resourceGroup().id)}',12))
 var blobname =toLower('filesys${envoirnment}')
+var PE1_Name=toLower('${azsynapse.name}-privateEndpoint1')
 
+var PrivateEndpointName='PE-PWB-Synapse-${envoirnment}'
+var privateDnsZoneName='privatelink-syn-${envoirnment}'
+var pvtEndpointDnsGroupName='${PrivateEndpointName}/SQLDNSGrp${envoirnment}'
 resource datalakestore 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   name: datalakename
   location: location
@@ -66,8 +70,40 @@ resource azsynapse 'Microsoft.Synapse/workspaces@2021-06-01'={
       filesystem:blobname
     }
     managedVirtualNetwork:'default'
-    publicNetworkAccess:'Disabled'
+    publicNetworkAccess:'Enabled'
   }
+}
+
+resource privateDnsZone1 'Microsoft.Network/privateDnsZones@2018-09-01' = {
+
+  name: privateDnsZoneName
+  location: location
+  properties: {
+    registrationEnabled: true
+  }
+}
+
+resource privateEndpoint1 'Microsoft.Network/privateEndpoints@2022-07-01' ={
+  
+  name:PE1_Name
+  location:location
+   properties: {
+    subnet: {
+      id: subnetID
+    }
+    privateLinkServiceConnections: [
+      {
+        name: PrivateEndpointName
+        properties: {
+          privateLinkServiceId: azsynapse.id
+          groupIds: [
+            'azsynapse'
+          ]
+        }
+      }
+    ]
+  }
+  
 }
 
 
