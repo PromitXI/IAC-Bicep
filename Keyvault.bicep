@@ -12,7 +12,7 @@ param location string
 
 
 
-param name string =take('PWB-${envoirnment}-KeyVlt-${uniqueString(resourceGroup().id)}-get',20)
+param name string =take('PWB-${envoirnment}-KeyVlt-${uniqueString(resourceGroup().id)}-get',21)
 
 
 
