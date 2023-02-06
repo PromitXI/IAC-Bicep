@@ -19,7 +19,7 @@ param subnet2ID string
 param VnetId string
 
 
-var synapsename=toLower('PWBSynapseData${envoirnment}')
+var synapsename=toLower('syn-edm-${envoirnment}-${location}')
 var datalakename =toLower(take('pwb${envoirnment}data${uniqueString(resourceGroup().id)}',12))
 var blobname =toLower('filesys${envoirnment}')
 var PE1_Name=toLower('${azsynapse.name}-privateEndpoint1')
@@ -75,7 +75,12 @@ resource azsynapse 'Microsoft.Synapse/workspaces@2021-06-01'={
 }
 
 
+
+
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+  dependsOn:[
+    azsynapse
+  ]
   name: PrivateEndpointName
   location: location
   properties: {
@@ -88,7 +93,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         properties: {
           privateLinkServiceId: azsynapse.id
           groupIds: [
-            'azsynapse'
+            'Sql'
           ]
         }
       }

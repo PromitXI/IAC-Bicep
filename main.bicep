@@ -20,7 +20,7 @@ param Subnet2AddressRange string='10.0.2.0/24'
 param envoirnment string
 
 @description('The name of Computer Deployed by VM')
-param computername string='VanServer'
+param computername string='IntRuntime'
 
 @description('Username of the VM')
 @secure()
