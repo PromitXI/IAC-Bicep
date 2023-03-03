@@ -1,7 +1,7 @@
 @description('The Name of the Envoirnment of Resource')
 @allowed( [
   'Dev'
-  'Test'
+  'QA'
   'Prod'
 ])
 param envoirnment string
@@ -9,7 +9,10 @@ param envoirnment string
 @description('The Location of The Resource Group and All Other Resources')
 param location string
 
-param name string =take('PWB-${envoirnment}-Data-KeVl-${uniqueString(resourceGroup().id)}',21)
+
+
+
+param name string =take('PWB-${envoirnment}-KeyVlt-${uniqueString(resourceGroup().id)}-get',21)
 
 
 
@@ -52,6 +55,9 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
 }
 
 resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
+  dependsOn:[
+    keyVault
+  ]
   name: 'keyVaultName/${name}'
   properties: {
     value: 'value'

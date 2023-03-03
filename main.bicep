@@ -14,13 +14,13 @@ param Subnet2AddressRange string='10.0.2.0/24'
 @description('The Name of the Envoirnment of Resource')
 @allowed( [
   'Dev'
-  'Test'
+  'QA'
   'Prod'
 ])
 param envoirnment string
 
 @description('The name of Computer Deployed by VM')
-param computername string='VanServer'
+param computername string='IntRuntime'
 
 @description('Username of the VM')
 @secure()
@@ -114,7 +114,7 @@ module SQLDatabase 'SQLServer.bicep'={
 module SynapseWorkspace 'Synapse.bicep'={
   name:'SynapseWorkspace'
   dependsOn:[
-    SQLDatabase
+    SQLDatabase,NetworkingResouces
   ]
   params:{
     envoirnment: envoirnment

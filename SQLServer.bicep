@@ -18,7 +18,7 @@ param sqlDatabaseSku object = {
 @description('The name of the environment. This must be Development/Quality/Production.')
 @allowed([
   'Dev'
-  'Test'
+  'QA'
   'Prod'
 ])
 param envoirnment string
@@ -47,6 +47,10 @@ var auditStorageAccountName = take('pwbaudit${location}${uniqueString(resourceGr
 var PrivateEndpointName='PE-PWB-SQL-${envoirnment}'
 var privateDnsZoneName='privatelink${environment().suffixes.sqlServerHostname}'
 var pvtEndpointDnsGroupName='${PrivateEndpointName}/SQLDNSGrp${envoirnment}'
+
+var PrivateEndpointName2='PE2-PWB-SQL-${envoirnment}'
+var privateDnsZoneName2='privatelink2${environment().suffixes.sqlServerHostname}'
+var pvtEndpointDnsGroupName2='${PrivateEndpointName}/SQLDNSGrp2${envoirnment}'
 
 
 

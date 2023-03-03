@@ -22,11 +22,10 @@ param VnetId string
 var synapsename=toLower('syn-edm-${envoirnment}-${location}')
 var datalakename =toLower(take('pwb${envoirnment}data${uniqueString(resourceGroup().id)}',12))
 var blobname =toLower('filesys${envoirnment}')
-var PE1_Name=toLower('${azsynapse.name}-privateEndpoint1')
 
-var PrivateEndpointName='PE-PWB-Synapse-${envoirnment}'
-var privateDnsZoneName='privatelink-${envoirnment}.synapseworkspace.azure.com'
-var pvtEndpointDnsGroupName='${PrivateEndpointName}/Syn${envoirnment}'
+
+
+
 resource datalakestore 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   name: datalakename
   location: location
@@ -76,64 +75,3 @@ resource azsynapse 'Microsoft.Synapse/workspaces@2021-06-01'={
 
 
 
-
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
-  dependsOn:[
-    azsynapse
-  ]
-  name: PrivateEndpointName
-  location: location
-  properties: {
-    subnet: {
-      id: subnet2ID
-    }
-    privateLinkServiceConnections: [
-      {
-        name: PrivateEndpointName
-        properties: {
-          privateLinkServiceId: azsynapse.id
-          groupIds: [
-            'Sql'
-          ]
-        }
-      }
-    ]
-  }
-  
-}
-
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: privateDnsZoneName
-  location: 'global'
-  properties: {}
-  
-}
-
-resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  parent: privateDnsZone
-  name: '${privateDnsZoneName}-link'
-  location: 'global'
-  properties: {
-    registrationEnabled: false
-    virtualNetwork: {
-      id: VnetId
-    }
-  }
-}
-
-resource pvtEndpointDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = {
-  name: pvtEndpointDnsGroupName
-  properties: {
-    privateDnsZoneConfigs: [
-      {
-        name: 'config1'
-        properties: {
-          privateDnsZoneId: privateDnsZone.id
-        }
-      }
-    ]
-  }
-  dependsOn: [
-    privateEndpoint
-  ]
-}

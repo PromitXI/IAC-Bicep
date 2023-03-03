@@ -1,7 +1,7 @@
 @description('The Name of the Envoirnment of Resource')
 @allowed( [
   'Dev'
-  'Test'
+  'QA'
   'Prod'
 ])
 param envoirnment string
