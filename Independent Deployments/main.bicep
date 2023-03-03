@@ -5,13 +5,13 @@ param location string ='westus3'
 @description('The Name of the Envoirnment of Resource')
 param envoirnment string='QA'
 
-@secure()
-@description('The administrator login username for the SQL server.')
-param sqlServerAdministratorLogin string
 
-@secure()
+@description('The administrator login username for the SQL server.')
+param sqlServerAdministratorLogin string='sqladminpromit'
+
+
 @description('The administrator login password for the SQL server.')
-param sqlServerAdministratorLoginPassword string
+param sqlServerAdministratorLoginPassword string='HogwardsPasswrdw1234'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' existing={
   name:'Vnet-PWB-QA-Datajobs'
